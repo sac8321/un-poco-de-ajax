@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Curso ajax</title>
+</head>
+<body>
+
+	<button onclick="ejecutarAjax()">Hazme click</button>
+
+	<div id="info"></div>
+
+	<script type="text/javascript">
+		
+		function ejecutarAjax() {
+			var ajaxRequest=new XMLHttpRequest();
+			ajaxRequest.onreadystatechange=function() {
+				if (ajaxRequest.readyState==4 && ajaxRequest.status==200) {
+			document.getElementById("info").innerHTML=ajaxRequest.responseText;
+				}
+			}
+			ajaxRequest.open("GET","Documento.txt",true);
+			ajaxRequest.send();
+		}
+
+	</script>
+
+</body>
+</html>
