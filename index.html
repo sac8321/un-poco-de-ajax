@@ -6,24 +6,31 @@
 </head>
 <body>
 
-	<button onclick="ejecutarAjax()">Hazme click</button>
+	<button onclick="ajax_get_json()">Mostrar Datos</button>
 
 	<div id="info"></div>
 
 	<script type="text/javascript">
-		
-		function ejecutarAjax() {
-			var ajaxRequest=new XMLHttpRequest();
-			ajaxRequest.onreadystatechange=function() {
-				if (ajaxRequest.readyState==4 && ajaxRequest.status==200) {
-			document.getElementById("info").innerHTML=ajaxRequest.responseText;
+		function ajax_get_json() 
+		{
+			var xmlhttp;
+			if (window.XMLHttpRequest)
+			{
+				xmlhttp=new XMLHttpRequest();
+			}else{
+				xmlhttp=new ActiveXObject("Microsoft.XMLHttp");
+			}
+			xmlhttp.onreadystatechange=function() 
+			{
+				if(xmlhttp.readyState === 4 && xmlhttp.status===200)
+				{
+					var datos = JSON.parse(xmlhttp.responseText);
+				 console.log(datos);
 				}
 			}
-			ajaxRequest.open("GET","Documento.txt",true);
-			ajaxRequest.send();
+			xmlhttp.open("GET","datos.json",true);
+			xmlhttp.send();
 		}
-
 	</script>
-
 </body>
 </html>
