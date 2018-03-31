@@ -25,15 +25,22 @@ var resultado=document.getElementById("info");
 			}
 
 			xmlhttp.onreadystatechange=function(){
+
 				if(xmlhttp.readyState===4 && xmlhttp.status===200)
 				{
 					var datos=JSON.parse(xmlhttp.responseText);
-				if (resultado.innerHTML===""){
-						for (var i in datos ) {
-						//referencia al DIV info que esta alamacenado en la variable resultado
-					 resultado.innerHTML+=datos[i].nombre+" "+datos[i].apellido+" tiene "+datos[i].edad+"<hr/>";
+
+					for (var i in datos) {
+						resultado.innerHTML+= "<h5>"+i+"</h5>";
+
+						var persona = datos[i];
+
+						for(var j in persona){
+							resultado.innerHTML+=j+": "+persona[j]+"<br/>";
+						}
+
 					}
-				}
+				
 				}
 			}
 			xmlhttp.open("GET","datos.json",true);
