@@ -23,23 +23,22 @@ var resultado=document.getElementById("info");
 			}else{
 				xmlhttp=new ActiveXObject("Microsoft.XMLHttp");
 			}
-			xmlhttp.onreadystatechange=function() 
-			{
-				if(xmlhttp.readyState === 4 && xmlhttp.status===200)
-				{
 
-					var datos = JSON.parse(xmlhttp.responseText);
-				 
-				if (resultado.innerHTML==""){
-						for (var i in datos) {
-						resultado.innerHTML+=i +":"+datos[i]+"<br/>";
+			xmlhttp.onreadystatechange=function(){
+				if(xmlhttp.readyState===4 && xmlhttp.status===200)
+				{
+					var datos=JSON.parse(xmlhttp.responseText);
+				if (resultado.innerHTML===""){
+						for (var i in datos ) {
+						//referencia al DIV info que esta alamacenado en la variable resultado
+					 resultado.innerHTML+=datos[i].nombre+" "+datos[i].apellido+" tiene "+datos[i].edad+"<hr/>";
 					}
 				}
-
 				}
 			}
 			xmlhttp.open("GET","datos.json",true);
-			xmlhttp.send();
+			xmlhttp.send();				
+
 		}
 	</script>
 </body>
