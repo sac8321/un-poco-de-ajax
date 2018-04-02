@@ -3,28 +3,24 @@
 <head>
 	<meta charset="utf-8">
 	<title>Curso ajax</title>
-	<style type="text/css">
-		.encontrado{
-			color:green;
-		}
-		.no-encontrado{
-			color:red;
-		}
-	</style>
+	
 </head>
 <body>
 
 	<!-- <button onclick="ajax_get_json()">Mostrar Datos</button> -->
-	Buscar persona: <input type="text" onkeyup="ajax_get_json(this.value)"/>
+	Nombre: <input type="text" id="nombre"><br/><br/>
+	Apellido:<input type="text" id="apellido"><br/><br/>
+
+	<input type="submit" value="Enviar" onclick="ajax_get_json();"/>
 
 	<div id="info"></div>
 
 	<script type="text/javascript">
 
-
-		function ajax_get_json(usuarioIngresado) 
+		var resultado=document.getElementById("info");
+		function ajax_get_json() 
 		{
-			var resultado=document.getElementById("info");
+			
 			var xmlhttp;
 
 			if (window.XMLHttpRequest)
@@ -34,39 +30,24 @@
 				xmlhttp=new ActiveXObject("Microsoft.XMLHttp");
 			}
 
-			if(usuarioIngresado.length===0)
-			{
-				resultado.innerHTML="";
-			}
-			else
-			{
-			xmlhttp.onreadystatechange=function()
-			{
+			var a=document.getElementById("nombre").value;
+			var b=document.getElementById("apellido").value;
+			var informacionDelUsuario="nombre="+a+"&apellido="+b;
 
-				if(xmlhttp.readyState===4 && xmlhttp.status===200)
-				{
-				
-					var datos=JSON.parse(xmlhttp.responseText);
-					var x =encontrarPersona(datos,usuarioIngresado);
-					var mensaje = (x===true) ? "<span class='encontrado'>Se encontró dato</span>" : 
-											   "<span class='no-encontrado'>No fue encontrado</span>";
+			xmlhttp.onreadystatechange=function(){
+			if(xmlhttp.readyState===4 && xmlhttp.status===200)
+			{
+					var mensaje=xmlhttp.responseText;
 					resultado.innerHTML=mensaje;
-				}
+			}	
 			}
-			xmlhttp.open("GET","datos.json",true);
-			xmlhttp.send();				
-			}
+			xmlhttp.open("POST","servidor.php",true);
+			xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+			xmlhttp.send(informacionDelUsuario);
+			
 		}
 
-		function encontrarPersona(objetoJson,usuario)
-		{
-			var arreglo=[];
-			for(var i in objetoJson){
-				var persona = objetoJson[i];
-				arreglo.push(persona.nombre.toUpperCase());
-			}
-			return arreglo.indexOf(usuario.toUpperCase())>-1;
-		}
+		
 
 			
 
