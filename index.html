@@ -3,20 +3,30 @@
 <head>
 	<meta charset="utf-8">
 	<title>Curso ajax</title>
+	<style type="text/css">
+		.encontrado{
+			color:green;
+		}
+		.no-encontrado{
+			color:red;
+		}
+	</style>
 </head>
 <body>
 
-	<button onclick="ajax_get_json()">Mostrar Datos</button>
+	<!-- <button onclick="ajax_get_json()">Mostrar Datos</button> -->
+	Buscar persona: <input type="text" onkeyup="ajax_get_json(this.value)"/>
 
 	<div id="info"></div>
 
 	<script type="text/javascript">
 
-var resultado=document.getElementById("info");
 
-		function ajax_get_json() 
+		function ajax_get_json(usuarioIngresado) 
 		{
+			var resultado=document.getElementById("info");
 			var xmlhttp;
+
 			if (window.XMLHttpRequest)
 			{
 				xmlhttp=new XMLHttpRequest();
@@ -24,42 +34,41 @@ var resultado=document.getElementById("info");
 				xmlhttp=new ActiveXObject("Microsoft.XMLHttp");
 			}
 
-			xmlhttp.onreadystatechange=function(){
+			if(usuarioIngresado.length===0)
+			{
+				resultado.innerHTML="";
+			}
+			else
+			{
+			xmlhttp.onreadystatechange=function()
+			{
 
 				if(xmlhttp.readyState===4 && xmlhttp.status===200)
 				{
 				
 					var datos=JSON.parse(xmlhttp.responseText);
-					var edadMenor=encontrarEdadMenor(datos);
-					resultado.innerHTML+="La edad menor es "+edadMenor;
-
+					var x =encontrarPersona(datos,usuarioIngresado);
+					var mensaje = (x===true) ? "<span class='encontrado'>Se encontró dato</span>" : 
+											   "<span class='no-encontrado'>No fue encontrado</span>";
+					resultado.innerHTML=mensaje;
 				}
 			}
 			xmlhttp.open("GET","datos.json",true);
 			xmlhttp.send();				
-
+			}
 		}
 
-				function encontrarEdadMenor(objetoJSON)
-				{
-					var arreglo=[];
-					for(var i in objetoJSON)
-					{
-						var persona=objetoJSON[i];
-						arreglo.push(persona.edad);
-					}
+		function encontrarPersona(objetoJson,usuario)
+		{
+			var arreglo=[];
+			for(var i in objetoJson){
+				var persona = objetoJson[i];
+				arreglo.push(persona.nombre.toUpperCase());
+			}
+			return arreglo.indexOf(usuario.toUpperCase())>-1;
+		}
 
-					// var edadMenor=arreglo[0];
-					// for(var j= 0;j<arreglo.length;j++){
-					// 	if(arreglo[j]<edadMenor){
-					// 		edadMenor=arreglo[j];
-					// 	}
-					// }
-
-					var edadMenor=Math.min.apply(null,arreglo);
-
-					return edadMenor;
-				}
+			
 
 	</script>
 </body>
