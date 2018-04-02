@@ -28,25 +28,39 @@ var resultado=document.getElementById("info");
 
 				if(xmlhttp.readyState===4 && xmlhttp.status===200)
 				{
-					var datos=JSON.parse(xmlhttp.responseText);
-
-					for (var i in datos) {
-						resultado.innerHTML+= "<h5>"+i+"</h5>";
-
-						var persona = datos[i];
-
-						for(var j in persona){
-							resultado.innerHTML+=j+": "+persona[j]+"<br/>";
-						}
-
-					}
 				
+					var datos=JSON.parse(xmlhttp.responseText);
+					var edadMenor=encontrarEdadMenor(datos);
+					resultado.innerHTML+="La edad menor es "+edadMenor;
+
 				}
 			}
 			xmlhttp.open("GET","datos.json",true);
 			xmlhttp.send();				
 
 		}
+
+				function encontrarEdadMenor(objetoJSON)
+				{
+					var arreglo=[];
+					for(var i in objetoJSON)
+					{
+						var persona=objetoJSON[i];
+						arreglo.push(persona.edad);
+					}
+
+					// var edadMenor=arreglo[0];
+					// for(var j= 0;j<arreglo.length;j++){
+					// 	if(arreglo[j]<edadMenor){
+					// 		edadMenor=arreglo[j];
+					// 	}
+					// }
+
+					var edadMenor=Math.min.apply(null,arreglo);
+
+					return edadMenor;
+				}
+
 	</script>
 </body>
 </html>
