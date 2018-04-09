@@ -3,22 +3,29 @@
 <head>
 	<meta charset="utf-8">
 	<title>Curso ajax</title>
+
+	<style type="text/css">
+		tr:nth-child(even){
+			background-color: #E8ECED;
+		}
+	</style>
 	
 </head>
 <body>
 
 	<!-- <button onclick="ajax_get_json()">Mostrar Datos</button> -->
-	Nombre: <input type="text" id="nombre"><br/><br/>
-	Apellido:<input type="text" id="apellido"><br/><br/>
+	Primer numero:<input type="text" id="n1"/><br/>
+	Segundo numero:<input type="text" id="n2"/><br/>
 
-	<input type="submit" value="Enviar" onclick="ajax_get_json();"/>
+	<button onclick="ejecutarAJAX()">Haz click</button>
 
 	<div id="info"></div>
 
 	<script type="text/javascript">
 
 		var resultado=document.getElementById("info");
-		function ajax_get_json() 
+
+		function ejecutarAJAX() 
 		{
 			
 			var xmlhttp;
@@ -30,20 +37,20 @@
 				xmlhttp=new ActiveXObject("Microsoft.XMLHttp");
 			}
 
-			var a=document.getElementById("nombre").value;
-			var b=document.getElementById("apellido").value;
-			var informacionDelUsuario="nombre="+a+"&apellido="+b;
+			var a =document.getElementById("n1").value;
+			var b =document.getElementById("n2").value;
+
+			var cadena = "num1="+a+"&num2="+b;
 
 			xmlhttp.onreadystatechange=function(){
+
 			if(xmlhttp.readyState===4 && xmlhttp.status===200)
-			{
-					var mensaje=xmlhttp.responseText;
-					resultado.innerHTML=mensaje;
+			{					
+					resultado.innerHTML=xmlhttp.responseText;
 			}	
 			}
-			xmlhttp.open("POST","servidor.php",true);
-			xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-			xmlhttp.send(informacionDelUsuario);
+			xmlhttp.open("GET","servidor.php?"+cadena,true);
+			xmlhttp.send();
 			
 		}
 

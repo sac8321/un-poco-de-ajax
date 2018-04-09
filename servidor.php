@@ -1,12 +1,21 @@
 <?php
 
-$nombre= $_POST['nombre'];
-$apellido= $_POST['apellido'];
+$num1=$_GET['num1'];
+$num2=$_GET['num2'];
 
-if (empty($nombre) || empty($apellido)) {
-	echo "Por favor ingrese su nombre y apellido";
+$respuesta="";
+
+if(!ctype_digit($num1)||!ctype_digit($num2)){
+	$respuesta.="Por favor ingresar nuemros";
 }else{
-	echo "Gracias ".$nombre." ".$apellido;
+	$respuesta.="<table>";
+		$respuesta.="<tr><td>".$num1."+".$num2."=".($num1+$num2)."</td></tr>";
+		$respuesta.="<tr><td>".$num1."-".$num2."=".($num1-$num2)."</td></tr>";
+		$respuesta.="<tr><td>".$num1."*".$num2."=".($num1*$num2)."</td></tr>";
+		$respuesta.="<tr><td>".$num1."/".$num2."=".($num1/$num2)."</td></tr>";
+	$respuesta.="</table>";
 }
+
+echo $respuesta;
 
 ?>
